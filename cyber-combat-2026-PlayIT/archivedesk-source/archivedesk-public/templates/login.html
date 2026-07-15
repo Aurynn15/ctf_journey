@@ -1,0 +1,22 @@
+{{define "login"}}
+<section class="grid">
+  <div class="panel pad">
+    <div class="hero">
+      <div>
+        <h1>Evidence intake without sprawl.</h1>
+        <p class="muted">ArchiveDesk keeps bundles, analyzer output, and review diagnostics in one controlled queue.</p>
+      </div>
+    </div>
+    <p class="badge">build v1.0.4</p>
+  </div>
+  <form class="panel pad form" method="post" action="/login">
+    <h2>Sign in</h2>
+    {{if .Error}}<div class="error">{{.Error}}</div>{{end}}
+    <label>Username<input name="username" autocomplete="username"></label>
+    <label>Password<input name="password" type="password" autocomplete="current-password"></label>
+    <button class="btn primary" type="submit">Sign in</button>
+    <a class="btn" href="/register">Create account</a>
+    <a class="muted" href="/reset">Reset password</a>
+  </form>
+</section>
+{{end}}

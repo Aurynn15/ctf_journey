@@ -1,0 +1,92 @@
+<% content_for :title, "home" %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "landing" %>
+<% end %>
+
+<section class="landing-section hero">
+  <div class="landing-hero">
+    <h1>Paper Maker</h1>
+    <p>Convert your documents into beautiful PDFs instantly. <br>
+    Secure, fast, and completely free.</p>
+    <%= link_to "Get Started", render_path, class: "btn-primary" %>
+  </div>
+</section>
+
+<section class="landing-features">
+  <h2>// How it works //</h2>
+  <div class="cards">
+    <div class="feature-card">
+      <div class="feature-icon-wrapper">
+        <svg fill="currentColor" stroke="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M315.27 33L96 304h128l-31.51 173.23a2.36 2.36 0 002.33 2.77h0a2.36 2.36 0 001.89-.95L416 208H288l31.66-173.25a2.45 2.45 0 00-2.44-2.75h0a2.42 2.42 0 00-1.95 1z" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+        </svg>
+      </div>
+      <h3>Instant Compilation</h3>
+      <p>Optimized compiler pipeline ensures millisecond document generation.</p>
+    </div>
+    
+    <div class="feature-connector">
+      <div class="connector-arrow">
+        <svg fill="currentColor" stroke="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M256 112v288m144-144H112" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+        </svg>
+      </div>
+    </div>
+  
+    <div class="feature-card">
+      <div class="feature-icon-wrapper">
+        <svg fill="currentColor" stroke="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M336 208v-95a80 80 0 00-160 0v95" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+          <rect fill="none" height="256" rx="48" ry="48" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" width="368" x="72" y="208"></rect>
+        </svg>
+      </div>
+      <h3>Secure Environment</h3>
+      <p>Isolated containerized builds guarantee data privacy and safety.</p>
+    </div>
+  
+    <div class="feature-connector">
+      <div class="connector-arrow">
+        <svg fill="currentColor" stroke="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M256 112v288m144-144H112" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+        </svg>
+      </div>
+    </div>
+  
+    <div class="feature-card">
+      <div class="feature-icon-wrapper">
+        <svg fill="currentColor" stroke="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M375.46 329c-30.82 5-64.84-18.06-96.11-46.72-35.8-32.8-63.5-73.47-79.62-116.71a179 179 0 01-13-58.82C185 86.87 200.77 64 227.13 64c30.13 0 56.4 20.35 68.64 47a303.4 303.4 0 0113.3 38.64C322 188.75 330.45 229 337.89 261c1.55 6.64 3.09 13.06 4.6 19 6.22 24.36 18.23 37.86 35.87 40.85 24 4 45.64-11 58.74-41" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+          <path d="M260.6 302.39L231.14 364a6.76 6.76 0 01-12.06.31L193.3 313.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+        </svg>
+      </div>
+      <h3>Version History</h3>
+      <p>Track your revisions and access your document history.</p>
+    </div>
+  </div>
+</section>
+
+<section class="landing-overview">
+  <h2>// About PaperMaker //</h2>
+  <p class="overview-content">
+    PaperMaker was built with the scientific and research communities in mind. We understand the complexities of setting up local LaTeX compilers, tracking package versions, and managing style files while trying to write a journal submission or a technical report. PaperMaker provides an instantly available, zero-setup, secure editing and compilation workspace on the cloud, so you can focus entirely on your content and mathematics.
+  </p>
+</section>
+
+<section class="landing-faq">
+  <h2>// Frequently Asked Questions //</h2>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <h3>Is PaperMaker free to use?</h3>
+      <p>Yes, PaperMaker is completely free for researchers, scientists, and students globally. There are no premium lockouts or compilation limits.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I need to install packages locally?</h3>
+      <p>No installation is required. Everything runs in isolated cloud compilation environments loaded with standard scientific packages.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Are my draft reports secure?</h3>
+      <p>Your privacy is our priority. Each compilation job runs in a fully isolated containerized workspace that is securely removed afterwards.</p>
+    </div>
+  </div>
+</section>
+

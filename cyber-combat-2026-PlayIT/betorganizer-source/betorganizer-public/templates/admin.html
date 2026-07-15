@@ -1,0 +1,415 @@
+{{define "admin.html"}}<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetOrganizer - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#000000',
+                            header: '#000000',
+                            primary: '#39FF14',
+                            primaryHover: '#32CC11',
+                            accent: '#39FF14',
+                            card: '#0a0a0a',
+                            border: '#27272a',
+                            textMuted: '#a1a1aa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #39FF14; 
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-zinc-100 min-h-screen flex flex-col">
+
+    <header class="bg-brand-header border-b-2 border-brand-primary sticky top-0 z-50">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                
+                <div class="flex items-center gap-6">
+                    <a href="/dashboard" class="flex items-center gap-2 cursor-pointer">
+                        <div class="bg-brand-primary p-1.5 flex items-center justify-center">
+                            <i class="ph-fill ph-strategy text-xl text-black"></i>
+                        </div>
+                        <span class="font-bold text-xl tracking-tight text-white uppercase">
+                            Bet<span class="text-brand-primary">Organizer</span>
+                        </span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4 text-sm font-medium">
+                    <span class="text-xs text-brand-textMuted uppercase tracking-wider">Pengguna</span>
+                    <span class="text-brand-primary font-bold">{{.User.Username}}</span>
+                    
+                    <div class="h-5 w-px bg-brand-border"></div>
+
+                    <span class="px-2.5 py-1 text-[10px] font-extrabold uppercase border border-brand-primary text-brand-primary bg-brand-primary/5">
+                        {{.User.Role}}
+                    </span>
+
+                    <div class="h-5 w-px bg-brand-border"></div>
+
+                    <a href="/dashboard" class="hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-wider">
+                        Dashboard
+                    </a>
+                    
+                    <a href="/logout" class="bg-brand-card border border-brand-border hover:border-brand-primary text-brand-textMuted hover:text-white px-3 py-2 text-xs font-bold uppercase tracking-wider transition-colors ml-2">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-[1600px] mx-auto w-full px-4 sm:px-6 py-6 flex flex-col gap-6 flex-grow">
+
+        <div class="border-b border-brand-border pb-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-2 text-brand-textMuted text-xs uppercase tracking-wider font-bold">
+                    <i class="ph ph-house text-sm"></i>
+                    <span>Dashboard</span>
+                    <i class="ph ph-caret-right text-xs"></i>
+                    <span class="text-white">Admin Panel</span>
+                </div>
+                <h1 class="text-2xl font-extrabold text-white tracking-tight uppercase mt-0.5">Panel Kontrol Admin / Organizer</h1>
+                <p class="text-xs text-brand-textMuted">Kelola data pertandingan, unduh laporan, dan atur sistem.</p>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <div class="flex items-center gap-1.5 bg-brand-primary/10 border border-brand-primary/30 px-3 py-2">
+                    <i class="ph-fill ph-user-circle-gear text-brand-primary text-sm"></i>
+                    <span class="text-brand-primary text-xs font-bold uppercase tracking-wider">{{.User.Role}}</span>
+                </div>
+                <a href="/dashboard" class="flex items-center gap-1.5 bg-zinc-950 border border-brand-border hover:border-brand-primary px-3 py-2 text-brand-textMuted hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">
+                    <i class="ph ph-arrow-left text-sm"></i>
+                    Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+            <div class="bg-brand-card border border-brand-border flex flex-col shadow-2xl">
+                
+                <div class="px-5 py-3.5 border-b border-brand-border bg-zinc-950/60 flex items-center gap-2">
+                    <i class="ph-fill ph-plus-circle text-brand-primary text-base"></i>
+                    <h3 class="font-bold text-white uppercase tracking-wider text-xs">Buat Pertandingan</h3>
+                </div>
+                
+                <div class="p-5 flex flex-col gap-3 flex-grow">
+                    <form hx-post="/admin/add-match" hx-target="#add-match-result" hx-swap="innerHTML" class="flex flex-col gap-3">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[10px] font-bold text-brand-textMuted uppercase tracking-wider">Tim Rumah (Home)</label>
+                            <div class="relative">
+                                <i class="ph ph-shield absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-textMuted text-sm"></i>
+                                <input type="text" name="home_team" placeholder="Contoh: Manchester United" required
+                                    class="w-full bg-brand-bg border border-brand-border focus:border-brand-primary outline-none text-white pl-8 pr-3 py-2.5 text-xs transition-colors placeholder:text-zinc-700"/>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[10px] font-bold text-brand-textMuted uppercase tracking-wider">Tim Tamu (Away)</label>
+                            <div class="relative">
+                                <i class="ph ph-shield absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-textMuted text-sm"></i>
+                                <input type="text" name="away_team" placeholder="Contoh: Chelsea" required
+                                    class="w-full bg-brand-bg border border-brand-border focus:border-brand-primary outline-none text-white pl-8 pr-3 py-2.5 text-xs transition-colors placeholder:text-zinc-700"/>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[10px] font-bold text-brand-textMuted uppercase tracking-wider">Tanggal & Waktu</label>
+                            <div class="relative">
+                                <i class="ph ph-calendar-blank absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-textMuted text-sm"></i>
+                                <input type="datetime-local" name="match_date" required
+                                    class="w-full bg-brand-bg border border-brand-border focus:border-brand-primary outline-none text-white pl-8 pr-3 py-2.5 text-xs transition-colors [color-scheme:dark]"/>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-brand-primary hover:bg-brand-primaryHover text-black font-bold uppercase text-xs py-3 tracking-wider transition-colors mt-1 flex items-center justify-center gap-2">
+                            <i class="ph-bold ph-plus text-sm"></i>
+                            Tambah Pertandingan
+                        </button>
+                    </form>
+                    <div id="add-match-result" class="text-xs text-center font-bold text-brand-primary min-h-[16px]"></div>
+                </div>
+            </div>
+
+            <div class="bg-brand-card border border-brand-border flex flex-col shadow-2xl">
+                
+                <div class="px-5 py-3.5 border-b border-brand-border bg-zinc-950/60 flex items-center gap-2">
+                    <i class="ph-fill ph-file-csv text-brand-primary text-base"></i>
+                    <h3 class="font-bold text-white uppercase tracking-wider text-xs">Unduh Laporan CSV</h3>
+                </div>
+                
+                <div class="p-5 flex flex-col gap-4 flex-grow justify-between">
+                    <div class="flex flex-col gap-3">
+                        <p class="text-xs text-brand-textMuted leading-relaxed">
+                            Ekspor semua data pertandingan beserta riwayat taruhan pengguna ke dalam format berkas CSV standar.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-2 mt-1">
+                            <div class="bg-zinc-950 border border-brand-border p-3 flex flex-col gap-1">
+                                <span class="text-[10px] text-brand-textMuted uppercase tracking-wider">Total Match</span>
+                                <span class="text-base font-extrabold text-white">{{len .Matches}}</span>
+                            </div>
+                            <div class="bg-zinc-950 border border-brand-border p-3 flex flex-col gap-1">
+                                <span class="text-[10px] text-brand-textMuted uppercase tracking-wider">Format</span>
+                                <span class="text-base font-extrabold text-brand-primary">.CSV</span>
+                            </div>
+                        </div>
+                        <ul class="flex flex-col gap-1.5 mt-1">
+                            <li class="flex items-center gap-2 text-xs text-brand-textMuted">
+                                <i class="ph-fill ph-check-circle text-brand-primary text-sm flex-shrink-0"></i>
+                                Data semua fixture & taruhan
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-brand-textMuted">
+                                <i class="ph-fill ph-check-circle text-brand-primary text-sm flex-shrink-0"></i>
+                                Penanda waktu otomatis pada nama file
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-brand-textMuted">
+                                <i class="ph-fill ph-check-circle text-brand-primary text-sm flex-shrink-0"></i>
+                                Kompatibel dengan Excel & Google Sheets
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col gap-2 mt-2">
+                        <a href="/admin/report-pdf"
+                            class="w-full bg-brand-primary hover:bg-brand-primaryHover text-black font-bold uppercase text-xs py-3 tracking-wider transition-colors text-center flex items-center justify-center gap-2">
+                            <i class="ph-bold ph-download-simple text-sm"></i>
+                            Unduh CSV
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-brand-card border border-brand-border flex flex-col shadow-2xl">
+                
+                <div class="px-5 py-3.5 border-b border-brand-border bg-zinc-950/60 flex items-center gap-2">
+                    <i class="ph-fill ph-file-pdf text-brand-primary text-base"></i>
+                    <h3 class="font-bold text-white uppercase tracking-wider text-xs">Generate Laporan PDF</h3>
+                </div>
+                
+                <div class="p-5 flex flex-col gap-4 flex-grow justify-between">
+                    <div class="flex flex-col gap-3">
+                        <p class="text-xs text-brand-textMuted leading-relaxed">
+                            Buat dokumen PDF resmi untuk satu pertandingan. Berisi detail match, jadwal, dan ringkasan taruhan.
+                        </p>
+                        <ul class="flex flex-col gap-1.5">
+                            <li class="flex items-center gap-2 text-xs text-brand-textMuted">
+                                <i class="ph-fill ph-check-circle text-brand-primary text-sm flex-shrink-0"></i>
+                                Detail tim & tanggal pertandingan
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-brand-textMuted">
+                                <i class="ph-fill ph-check-circle text-brand-primary text-sm flex-shrink-0"></i>
+                                Ringkasan total taruhan & partisipan
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-brand-textMuted">
+                                <i class="ph-fill ph-check-circle text-brand-primary text-sm flex-shrink-0"></i>
+                                Hasil match (jika sudah tersedia)
+                            </li>
+                        </ul>
+                    </div>
+                    <form method="POST" action="/admin/generate-report" class="flex flex-col gap-3 mt-1">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[10px] font-bold text-brand-textMuted uppercase tracking-wider">Pilih Pertandingan</label>
+                            <div class="relative">
+                                <i class="ph ph-soccer-ball absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-textMuted text-sm pointer-events-none"></i>
+                                <select name="match_id" required
+                                    class="w-full bg-brand-bg border border-brand-border focus:border-brand-primary outline-none text-white pl-8 pr-8 py-2.5 text-xs transition-colors cursor-pointer appearance-none">
+                                    <option value="">— Pilih Match —</option>
+                                    {{range .Matches}}
+                                    {{if or (eq $.User.Role "admin") (and .CreatedBy.Valid (eq .CreatedBy.Int64 (int64 $.User.ID)))}}
+                                    <option value="{{.ID}}">{{.HomeTeam}} vs {{.AwayTeam}} ({{.MatchDate}})</option>
+                                    {{end}}
+                                    {{end}}
+                                </select>
+                                <i class="ph ph-caret-down absolute right-2.5 top-1/2 -translate-y-1/2 text-brand-textMuted text-xs pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-brand-primary hover:bg-brand-primaryHover text-black font-bold uppercase text-xs py-3 tracking-wider transition-colors flex items-center justify-center gap-2">
+                            <i class="ph-bold ph-file-arrow-down text-sm"></i>
+                            Generate & Download PDF
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        {{if eq .User.Role "organizer"}}
+        <div class="bg-brand-card border border-brand-border shadow-2xl">
+            <div class="px-5 py-3.5 border-b border-brand-border bg-zinc-950/60 flex items-center gap-2">
+                <i class="ph-fill ph-medal text-brand-primary text-base"></i>
+                <h3 class="font-bold text-white uppercase tracking-wider text-xs">Badge Organizer</h3>
+                <span class="ml-auto text-[10px] text-brand-textMuted border border-brand-border px-2 py-0.5">Opsional</span>
+            </div>
+            <div class="p-5 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                <div class="flex-shrink-0 flex flex-col items-center gap-2">
+                    <div class="w-16 h-16 border-2 border-dashed border-brand-border bg-zinc-950 flex items-center justify-center">
+                        {{if .User.Badge.Valid}}
+                        <img src="/uploads/{{.User.Badge.String}}" alt="badge" class="w-full h-full object-contain p-1"/>
+                        {{else}}
+                        <i class="ph ph-image text-2xl text-zinc-600"></i>
+                        {{end}}
+                    </div>
+                    <span class="text-[9px] text-brand-textMuted uppercase tracking-wider">Badge saat ini</span>
+                </div>
+                <div class="flex flex-col gap-2 flex-grow">
+                    <p class="text-xs text-brand-textMuted leading-relaxed">
+                        Upload badge/logo yang akan ditampilkan pada setiap card pertandingan yang Anda buat. Format PNG/JPG, maks 500KB.
+                    </p>
+                    <form method="POST" action="/admin/upload-badge" enctype="multipart/form-data" class="flex items-center gap-2 mt-1">
+                        <input type="file" name="badge" accept="image/*" required
+                            class="flex-1 bg-brand-bg border border-brand-border text-white text-xs p-2 file:bg-brand-primary file:text-black file:font-bold file:text-[10px] file:uppercase file:border-none file:px-3 file:py-1 file:mr-2 file:cursor-pointer cursor-pointer"/>
+                        <button type="submit"
+                            class="flex-shrink-0 bg-brand-primary hover:bg-brand-primaryHover text-black font-bold uppercase text-xs px-4 py-2.5 tracking-wider transition-colors whitespace-nowrap">
+                            Upload Badge
+                        </button>
+                    </form>
+                    <a href="/admin/preview-badge" class="text-[10px] text-brand-primary hover:underline w-max flex items-center gap-1">
+                        <i class="ph ph-eye text-xs"></i>
+                        Preview tampilan badge
+                    </a>
+                </div>
+            </div>
+        </div>
+        {{end}}
+
+        <div class="bg-brand-card border border-brand-border shadow-2xl">
+            <div class="px-5 py-3.5 border-b border-brand-border bg-zinc-950/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <h2 class="font-bold text-white uppercase tracking-wider flex items-center gap-2 text-sm">
+                    <i class="ph-fill ph-soccer-ball text-brand-primary text-lg"></i>
+                    Semua Pertandingan
+                    <span class="text-brand-textMuted text-xs font-normal">(Fixtures)</span>
+                </h2>
+                <div class="flex items-center gap-2">
+                    <span class="bg-brand-primary text-black text-[10px] font-extrabold px-2.5 py-1 uppercase tracking-wider">{{len .Matches}} Match</span>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                {{if .Matches}}
+                <table class="w-full text-left border-collapse min-w-[900px]">
+                    <thead>
+                        <tr class="border-b border-brand-border bg-zinc-950/45">
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider w-16">ID</th>
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider">Klub Utama</th>
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider">Klub Tamu</th>
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider">Tanggal & Waktu</th>
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider">Organizer</th>
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider">Status</th>
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider">Hasil</th>
+                            <th class="p-4 text-xs font-bold text-brand-textMuted uppercase tracking-wider text-center">Tindakan Kelola</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Matches}}
+                        <tr class="border-b border-brand-border hover:bg-zinc-950/40 transition-colors">
+                            <td class="p-4 font-mono text-xs text-brand-textMuted">#{{.ID}}</td>
+                            <td class="p-4 font-bold text-white">{{.HomeTeam}}</td>
+                            <td class="p-4 font-bold text-white">{{.AwayTeam}}</td>
+                            <td class="p-4 text-xs text-brand-textMuted">{{.MatchDate}}</td>
+                            <td class="p-4">
+                                {{if .OrganizerName.Valid}}
+                                    <div class="flex items-center gap-2">
+                                        {{if .OrganizerBadge.Valid}}
+                                        <img src="/uploads/{{.OrganizerBadge.String}}" alt="badge" class="w-5 h-5 object-contain"/>
+                                        {{end}}
+                                        <span class="px-2 py-0.5 text-[9px] font-bold uppercase border border-brand-primary/20 text-brand-primary bg-brand-primary/5">
+                                            {{.OrganizerName.String}}
+                                        </span>
+                                    </div>
+                                {{else}}
+                                    <span class="text-zinc-600">—</span>
+                                {{end}}
+                            </td>
+                            <td class="p-4 text-xs font-bold text-zinc-300 uppercase tracking-wider">{{.Status}}</td>
+                            <td class="p-4 text-xs font-bold">
+                                {{if .Result.Valid}}
+                                    <span class="px-2 py-1 text-[10px] font-extrabold uppercase border border-brand-primary/30 text-brand-primary bg-brand-primary/5">
+                                        {{.Result.String}}
+                                    </span>
+                                {{else}}
+                                    <span class="text-zinc-600">—</span>
+                                {{end}}
+                            </td>
+                            <td class="p-4">
+                                {{if or (eq $.User.Role "admin") (and .CreatedBy.Valid (eq .CreatedBy.Int64 (int64 $.User.ID)))}}
+                                <div class="flex flex-col sm:flex-row gap-3 items-center justify-center">
+                                    
+                                    <form class="flex items-center gap-1.5" hx-post="/admin/set-result" hx-target="#res-out-{{.ID}}" hx-swap="innerHTML">
+                                        <input type="hidden" name="match_id" value="{{.ID}}"/>
+                                        <select name="result" class="bg-brand-bg border border-brand-border text-white text-xs px-2 py-1.5 focus:border-brand-primary outline-none cursor-pointer">
+                                            <option value="home">Home</option>
+                                            <option value="draw">Draw</option>
+                                            <option value="away">Away</option>
+                                        </select>
+                                        <button class="bg-brand-primary hover:bg-brand-primaryHover text-black px-2.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors" type="submit">
+                                            Set
+                                        </button>
+                                    </form>
+
+                                    <form hx-post="/admin/delete-match" hx-target="closest tr" hx-swap="outerHTML" hx-confirm="Apakah Anda yakin ingin menghapus pertandingan ini dan seluruh taruhan terkait?">
+                                        <input type="hidden" name="match_id" value="{{.ID}}"/>
+                                        <button class="border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white px-2.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors" type="submit">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                                <div id="res-out-{{.ID}}" class="text-center text-xs font-bold text-brand-primary mt-1.5"></div>
+                                {{else}}
+                                <span class="text-xs text-zinc-600 text-center block italic">Bukan Fixture Anda</span>
+                                {{end}}
+                            </td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+                {{else}}
+                <div class="p-8 text-center text-zinc-500">
+                    Belum ada pertandingan terdaftar dalam sistem.
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="mt-auto border-t border-brand-border py-6 text-center text-xs text-brand-textMuted bg-brand-card">
+        BetOrganizer v1.0 &copy; 2026. Hak Cipta Dilindungi Undang-Undang.
+    </footer>
+
+</body>
+</html>{{end}}

@@ -1,0 +1,20 @@
+{{define "admin"}}
+<div class="hero">
+  <div><h1>Review queue</h1><p class="muted">Admin-only XML manifest parsing and diagnostics.</p></div>
+</div>
+<div class="panel pad">
+  <table>
+    <thead><tr><th>Case</th><th>Owner</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {{range .Cases}}
+      <tr>
+        <td>{{.Title}} <span class="muted">#{{.ID}}</span></td>
+        <td>{{.Owner.Username}}</td>
+        <td><span class="badge">{{.Status}}</span></td>
+        <td><form method="post" action="/admin/reviews/{{.ID}}/parse"><button class="btn primary" type="submit">Parse manifest</button></form></td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+</div>
+{{end}}

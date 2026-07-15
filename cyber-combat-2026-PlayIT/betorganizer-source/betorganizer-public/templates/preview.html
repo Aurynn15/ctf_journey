@@ -1,0 +1,98 @@
+{{define "preview.html"}}<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetOrganizer - Preview Badge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            bg: '#000000', header: '#000000',
+                            primary: '#39FF14', primaryHover: '#32CC11',
+                            card: '#0a0a0a', border: '#27272a', textMuted: '#a1a1aa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }</style>
+</head>
+<body class="bg-brand-bg text-zinc-100 min-h-screen flex flex-col">
+    <header class="bg-brand-header border-b-2 border-brand-primary sticky top-0 z-50">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                <a href="/dashboard" class="flex items-center gap-2">
+                    <div class="bg-brand-primary p-1.5"><i class="ph-fill ph-strategy text-xl text-black"></i></div>
+                    <span class="font-bold text-xl tracking-tight text-white uppercase">Bet<span class="text-brand-primary">Organizer</span></span>
+                </a>
+                <div class="flex items-center gap-4 text-sm">
+                    <span class="text-brand-primary font-bold">{{.User.Username}}</span>
+                    <span class="px-2.5 py-1 text-[10px] font-extrabold uppercase border border-brand-primary text-brand-primary bg-brand-primary/5">{{.User.Role}}</span>
+                    <a href="/admin" class="text-xs font-bold uppercase text-brand-textMuted hover:text-white transition-colors">Panel</a>
+                    <a href="/logout" class="bg-brand-card border border-brand-border hover:border-brand-primary text-brand-textMuted hover:text-white px-3 py-2 text-xs font-bold uppercase transition-colors">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-[640px] mx-auto w-full px-4 py-10 flex flex-col gap-6">
+        <div>
+            <h1 class="text-xl font-extrabold text-white uppercase tracking-tight">Badge Organizer</h1>
+            <p class="text-xs text-brand-textMuted mt-1">Preview badge yang akan ditampilkan pada card pertandingan Anda.</p>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border p-8 flex flex-col items-center gap-6">
+            <div class="text-[10px] text-brand-textMuted uppercase tracking-wider font-bold">Tampilan Badge</div>
+            <div class="flex items-center gap-3 bg-zinc-950 border border-brand-border px-6 py-4">
+                {{if .Badge}}
+                <img src="/uploads/{{.Badge}}" alt="Badge" class="w-8 h-8 object-contain"/>
+                {{else}}
+                <div class="w-8 h-8 border border-brand-border bg-zinc-900 flex items-center justify-center">
+                    <i class="ph ph-image text-sm text-zinc-600"></i>
+                </div>
+                {{end}}
+                <span class="text-sm font-bold text-white">{{.User.Username}}</span>
+                <span class="text-[9px] uppercase text-brand-textMuted border border-zinc-700 px-1.5 py-0.5">{{.User.Role}}</span>
+            </div>
+            {{if not .Badge}}
+            <p class="text-xs text-zinc-600 text-center">Belum ada badge. Unggah badge dari panel admin.</p>
+            {{end}}
+        </div>
+
+        <div class="bg-brand-card border border-brand-border p-5 flex flex-col gap-3">
+            <div class="text-[10px] text-brand-textMuted uppercase tracking-wider font-bold mb-1">Contoh tampilan di card pertandingan</div>
+            <div class="flex justify-between items-center text-[10px] text-brand-textMuted font-bold uppercase tracking-widest">
+                <span>2026-07-01 20:00</span>
+                <div class="flex gap-2 items-center">
+                    <span class="text-[9px] border border-zinc-800 px-1.5 py-0.5 text-zinc-400">Org: {{.User.Username}}</span>
+                    {{if .Badge}}
+                    <img src="/uploads/{{.Badge}}" alt="badge" class="w-4 h-4 object-contain"/>
+                    {{end}}
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 py-2 border-t border-brand-border">
+                <span class="font-bold text-white text-sm">Manchester United</span>
+                <span class="text-brand-textMuted text-xs">vs</span>
+                <span class="font-bold text-white text-sm">Chelsea</span>
+            </div>
+        </div>
+
+        <div class="flex gap-3">
+            <a href="/admin" class="flex-1 bg-brand-primary hover:bg-brand-primaryHover text-black font-bold uppercase text-xs py-3 tracking-wider text-center block">
+                Kembali ke Panel
+            </a>
+            <a href="/dashboard" class="flex-1 bg-zinc-950 border border-brand-border hover:border-brand-primary text-brand-textMuted hover:text-white font-bold uppercase text-xs py-3 tracking-wider text-center block transition-colors">
+                Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>{{end}}

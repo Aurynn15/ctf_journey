@@ -1,1 +1,48 @@
+# IDA Pro
+*.i64
+*.id0
+*.id1
+*.id2
+*.nam
+*.til
+
+# GDB
+.gdb_history
+
+# Vim swap files
+*.swp
+*.swo
+*.swn
+*.swm
+*.swl
+
+# SageMath auto-generated
+*.sage.py
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+
+# VS Code
 .vscode/
+
+# Ghidra
+*.gpr
+*.rep/
+*.lock
+*.lock~
+
+# Backup files
+*.bak*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Misc
+*.log

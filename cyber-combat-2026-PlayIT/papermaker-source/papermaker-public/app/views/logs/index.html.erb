@@ -1,0 +1,114 @@
+<% content_for :title, "log" %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "log" %>
+  <script src="https://unpkg.com/lucide@latest"></script>
+<% end %>
+
+<div class="logs-wrapper">
+  <% if flash[:log_error] %>
+    <div class="log-alert log-alert-error" id="log-alert">
+      <%= raw(flash[:log_error]) %>
+    </div>
+  <% end %>
+  <% if flash[:log_success] %>
+    <div class="log-alert log-alert-success" id="log-alert-success">
+      <%= raw(flash[:log_success]) %>
+    </div>
+  <% end %>
+
+  <div class="logs-container">
+    <div class="logs-header">
+      <div class="logs-header-info">
+        <h2>Maintenance Logs</h2>
+        <p>Manage reports of maintenance of this website, neither it is about bug or security patch.</p>
+      </div>
+      <button class="btn-primary" onclick="document.getElementById('newLogModal').style.display='flex'">New Log</button>
+    </div>
+
+    <ul class="logs-list">
+      <% if @logs.empty? %>
+        <li class="log-item" style="text-align: center; color: var(--secondary-text);">No logs found.</li>
+      <% else %>
+        <% @logs.each do |log| %>
+          <li class="log-item <%= 'muted' if log.resolved_at.present? %>">
+            <div class="log-item-header">
+              <div>
+                <h3 class="log-title"><%= log.title %></h3>
+                <div class="log-meta">
+                  <span>By: <%= log.author %></span> |
+                  <span><%= log.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
+                </div>
+              </div>
+              <div class="log-actions">
+                <% if log.resolved_at.present? %>
+                  <button class="btn-secondary btn-resolve" disabled>Resolved</button>
+                <% else %>
+                  <%= button_to "Resolve", resolve_log_path(log), method: :patch, class: "btn-secondary btn-resolve", form: { style: "margin: 0;" } %>
+                <% end %>
+                <%= button_to delete_log_path(log), method: :delete, class: "btn-danger-outline", form: { style: "margin: 0; margin-left: 8px;" }, onclick: "return confirm('Are you sure you want to delete this log?');" do %>
+                  <i data-lucide="trash" style="width: 16px; height: 16px;"></i>
+                <% end %>
+              </div>
+            </div>
+            <p class="log-report"><%= log.report %></p>
+            <% if log.attachment.present? %>
+              <div style="margin-top: 12px;">
+                <%= link_to "📎 #{log.attachment}", log_attachment_path(log), target: "_blank", class: "log-attachment" %>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="modal-overlay" id="newLogModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>New Log</h3>
+      <button class="modal-close" onclick="document.getElementById('newLogModal').style.display='none'">&times;</button>
+    </div>
+    
+    <%= form_with model: @log, url: log_path, local: true, multipart: true do |f| %>
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title, class: "form-control", required: true, placeholder: "Title" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :report %>
+        <%= f.text_area :report, class: "form-control", required: true, placeholder: "Detail about log" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :attachment, "Attachment (Max 1MB, Optional: PNG, JPG, PDF)" %>
+        <%= f.file_field :attachment, class: "form-control", accept: "image/png,image/jpeg,application/pdf" %>
+      </div>
+
+      <div style="text-align: right; margin-top: 24px;">
+        <button type="button" class="btn-secondary" onclick="document.getElementById('newLogModal').style.display='none'" style="margin-right: 8px;">Cancel</button>
+        <%= f.submit "Save", class: "btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const alerts = document.querySelectorAll('.log-alert');
+    alerts.forEach(alert => {
+      
+    });
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  });
+
+  // Close modal when clicking outside
+  document.getElementById('newLogModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.style.display = 'none';
+    }
+  });
+</script>

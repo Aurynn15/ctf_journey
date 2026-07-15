@@ -1,0 +1,11 @@
+{{define "reset"}}
+<form class="panel pad form narrow" method="post" action="/reset">
+  <h1>Reset password</h1>
+  {{if .Error}}<div class="error">{{.Error}}</div>{{end}}
+  {{if .Notice}}<div class="notice">{{.Notice}}</div>{{end}}
+  <label>User ID<input name="user_id"></label>
+  <label>Reset token<input name="token"></label>
+  <label>New password<input name="password" type="password"></label>
+  <button class="btn primary" type="submit">Update password</button>
+</form>
+{{end}}

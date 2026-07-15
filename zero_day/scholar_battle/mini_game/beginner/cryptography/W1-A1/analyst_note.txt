@@ -1,0 +1,16 @@
+CATATAN ANALIS -- KASUS INS-2026-0515
+Analis: Reza Pratama
+Tanggal: 15 Mei 2026
+
+Dari hasil investigasi awal, pelaku diketahui telah menggunakan
+DUA LAPISAN encoding umum untuk menyamarkan data yang diekstrak.
+Teknik ini sudah sering dijumpai dalam kasus credential dump publik.
+
+PENTING: Mulailah analisis dari file encoded_memo.txt, BUKAN dari
+file log server. File log mengandung data dengan format yang berbeda
+dan bukan target utama pemeriksaan ini.
+
+Identifikasi setiap lapisan encoding dari karakteristik visual output
+setelah setiap langkah dekoding dilakukan.
+
+-- Reza Pratama, Analis CSIRT

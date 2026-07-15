@@ -1,0 +1,159 @@
+{{define "base"}}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BetOrganizer — {{block "title" .}}Home{{end}}</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           #f4f6f8;
+      --surface:      #ffffff;
+      --surface-alt:  #fcfdfe;
+      --border:       #e2e8f0;
+      --border-dark:  #cbd5e1;
+      --text:         #1e293b;
+      --text-dim:     #64748b;
+      --text-muted:   #94a3b8;
+      --primary:      #1b5e20;
+      --primary-light:#2e7d32;
+      --primary-dark: #0d3b12;
+      --accent:       #f59e0b;
+      --accent-dark:  #d97706;
+      --success:      #16a34a;
+      --danger:       #dc2626;
+      --info:         #2563eb;
+      --nav-bg:       #0d3b12;
+      --nav-text:     #ffffff;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      background: var(--nav-bg);
+      border-bottom: 3px solid var(--accent);
+      padding: 0 24px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--nav-text);
+    }
+    .nav-brand { font-size: 16px; font-weight: 800; letter-spacing: -.5px; display: flex; align-items: center; gap: 6px; }
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-links a { color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 600; padding: 4px 8px; transition: color .15s; }
+    .nav-links a:hover { color: var(--nav-text); }
+    .nav-user { font-size: 13px; color: var(--accent); font-weight: 600; }
+
+    /* LAYOUT */
+    .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+
+    /* SECTION */
+    .section { margin-bottom: 24px; }
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 10px;
+      border-left: 3px solid var(--primary);
+      padding-left: 8px;
+    }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; background: var(--surface); }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: .05em; background: #f8fafc; }
+    td { font-size: 13px; color: var(--text); }
+    tbody tr:hover td { background: #f1f5f9; }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* BADGE */
+    .badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 2px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .badge-admin     { background: var(--primary); color: #ffffff; }
+    .badge-organizer { background: var(--info); color: #ffffff; }
+    .badge-user      { background: var(--border-dark); color: var(--text); }
+    .pred-home { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .pred-draw { background: #f1f5f9; color: #475467; border: 1px solid #e2e8f0; }
+    .pred-away { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background-color .15s, color .15s;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary  { background: var(--primary); color: #ffffff; }
+    .btn-primary:hover { background: var(--primary-light); }
+    .btn-ghost    { background: transparent; color: var(--text-dim); border: 1px solid var(--border-dark); }
+    .btn-ghost:hover { color: var(--text); background: #f1f5f9; }
+    .btn-danger   { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+    .btn-danger:hover { background: #fef2f2; }
+    .btn-success  { background: var(--success); color: #ffffff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-sm       { padding: 4px 8px; font-size: 11px; }
+    .btn-full     { width: 100%; justify-content: center; }
+
+    /* FORMS */
+    label { display: block; font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; margin-top: 12px; }
+    input, select {
+      background: var(--surface);
+      border: 1px solid var(--border-dark);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 2px;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      transition: border-color .15s;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--primary); }
+    select option { background: var(--surface); }
+
+    /* ALERTS */
+    .alert { padding: 10px 14px; border-radius: 2px; font-size: 13px; margin-bottom: 12px; font-weight: 500; }
+    .alert-error   { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+    .alert-success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+
+    /* STATUS TEXT */
+    .text-won     { color: var(--success); font-weight: 700; }
+    .text-lost    { color: var(--danger); font-weight: 700; }
+    .text-pending { color: var(--text-dim); }
+    .text-dim     { color: var(--text-dim); }
+    .text-accent  { color: var(--primary); font-weight: 700; }
+    .text-small   { font-size: 11px; }
+    .mono         { font-family: 'Courier New', monospace; font-size: 12px; color: var(--text-dim); font-weight: bold; }
+
+    /* DIVIDER */
+    hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+    /* EMPTY STATE */
+    .empty { text-align: center; padding: 24px 0; color: var(--text-dim); font-size: 13px; background: var(--surface); border: 1px solid var(--border); }
+
+    footer { text-align: center; padding: 24px 0; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); background: var(--surface); margin-top: 48px; }
+  </style>
+</head>
+<body>
+{{block "body" .}}{{end}}
+<footer>BetOrganizer v1.0 &copy; 2026</footer>
+</body>
+</html>{{end}}

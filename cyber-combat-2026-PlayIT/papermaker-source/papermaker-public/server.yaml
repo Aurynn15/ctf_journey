@@ -1,0 +1,14 @@
+server_config:
+  host: 127.0.0.1
+  port: 8150
+  debug_mode: false
+endpoints:
+  - /api/v1/users
+  - /api/v1/auth
+database:
+  engine: sqlite3
+  pool_size: 5
+build:
+  ci_pipeline: github-actions
+  deploy_target: production
+  notifications: false

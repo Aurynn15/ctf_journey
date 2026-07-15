@@ -1,0 +1,41 @@
+<% content_for :title, "render" %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "renderer" %>
+<% end %>
+
+<section class="workspace">
+  <div class="editor-pane">
+    <div class="pane-header">
+      <h2>Source</h2>
+    </div>
+
+    <%= form_with url: render_path, class: "latex-form", data: { turbo: false } do |form| %>
+      <%= form.text_area :source, value: @source, spellcheck: false, placeholder: "Enter document source code here..." %>
+      <%= form.submit "Compile PDF" %>
+    <% end %>
+  </div>
+
+  <div class="preview-pane">
+    <div class="pane-header">
+      <h2>Preview</h2>
+      <% if @pdf_id.present? %>
+        <%= link_to "Download PDF", result_download_path(@pdf_id), class: "btn-secondary", target: "_blank", download: true %>
+      <% end %>
+    </div>
+    
+    <% if @error.present? %>
+      <div class="flash alert">
+        <strong>Error:</strong> <%= @error %>
+      </div>
+      <div style="color: var(--secondary-text); text-align: center; margin-top: 40px; font-family: var(--font-mono);">
+        No preview available.
+      </div>
+    <% elsif @pdf_id.present? %>
+      <iframe src="<%= result_download_path(@pdf_id) %>"></iframe>
+    <% else %>
+      <div style="color: var(--secondary-text); text-align: center; margin-top: 40px; font-family: var(--font-mono);">
+        No preview available.<br>Submit your document source to generate a PDF.
+      </div>
+    <% end %>
+  </div>
+</section>

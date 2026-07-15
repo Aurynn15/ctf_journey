@@ -1,0 +1,41 @@
+{{define "cases"}}
+<div class="hero">
+  <div>
+    <h1>Cases</h1>
+    <p class="muted">Upload evidence bundles, run metadata analysis, and publish review reports.</p>
+  </div>
+  <form class="split" method="post" action="/cases">
+    <input name="title" placeholder="New case title (Press /)" aria-label="New case title">
+    <button class="btn primary" type="submit">Create case</button>
+  </form>
+</div>
+<div class="cards">
+  {{range .Cases}}
+  <article class="panel pad">
+    <div class="split"><span class="badge">{{.Status}}</span><span class="badge">{{len .Evidence}} evidence</span><span class="badge">{{len .Reports}} reports</span></div>
+    <p class="case-title">{{.Title}}</p>
+    <p class="muted">Case #{{.ID}} · marker {{.Marker}}</p>
+    <a class="btn" href="/cases/{{.ID}}">Open case</a>
+  </article>
+  {{else}}
+  <div class="panel pad"><h2>No cases yet</h2><p class="muted">Create a case, then upload a ZIP with manifest.xml and evidence files.</p></div>
+  {{end}}
+</div>
+<script>
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+    return;
+  }
+  const isK = e.key.toLowerCase() === 'k';
+  const isSlash = e.key === '/';
+  const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+  if (isSlash || (isCtrlOrCmd && isK)) {
+    const input = document.querySelector('input[name="title"]');
+    if (input) {
+      e.preventDefault();
+      input.focus();
+    }
+  }
+});
+</script>
+{{end}}

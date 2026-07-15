@@ -1,0 +1,84 @@
+/lib64/ld-linux-x86-64.so.2
+__cxa_finalize
+read
+getpid
+__libc_start_main
+socket
+signal
+srand
+memset
+setvbuf
+strncmp
+stdout
+puts
+fflush
+close
+bind
+htons
+fork
+dup2
+listen
+perror
+accept
+_exit
+__isoc99_sscanf
+printf
+setsockopt
+time
+libc.so.6
+GLIBC_2.7
+GLIBC_2.2.5
+GLIBC_2.34
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+PTE1
+u+UH
+== svcd protokol middleware v3 ==
+catatan rilis v3.0: ECHO ditandai USANG (no-op); gunakan PUSH untuk blok data.
+perintah: AUTH <token> | INFO | VERSION | ECHO | PUSH | QUIT
+nonce=0x%04x
+handshake: kirim 'AUTH <token>', token=segel(nonce), sebelum PUSH.
+anchor=%p
+svcd build 3.0.1-middleware (static)
+data?
+echo: (perintah usang sejak v3.0, data diabaikan)
+push: %s
+AUTH
+auth ok
+auth gagal
+INFO
+VERSION
+ECHO
+PUSH
+perlu handshake (AUTH) dulu
+QUIT
+perintah tak dikenal
+bind
+:*3$"
+GCC: (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+.shstrtab
+.interp
+.note.gnu.property
+.note.gnu.build-id
+.note.ABI-tag
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.init
+.plt
+.plt.got
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.dynamic
+.data
+.bss
+.comment

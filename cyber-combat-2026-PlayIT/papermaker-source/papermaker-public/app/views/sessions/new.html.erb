@@ -1,0 +1,22 @@
+<% content_for :title, "login" %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "auth" %>
+<% end %>
+
+<section class="panel auth-panel">
+  <h1>Login</h1>
+
+  <%= form_with url: login_path, class: "form" do |form| %>
+    <label>
+      Username
+      <%= form.text_field :username, required: true, autofocus: true %>
+    </label>
+
+    <label>
+      Password
+      <%= form.password_field :password, required: true %>
+    </label>
+
+    <%= form.submit "Login" %>
+  <% end %>
+</section>

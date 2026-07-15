@@ -1,0 +1,3 @@
+Arsip KotakRahasia - PT Kunci Aman Nusantara
+Pesan rahasia di-enkode ke heksadesimal (cipher.hex).
+Skema enkripsi: XOR dengan satu byte kunci tunggal.

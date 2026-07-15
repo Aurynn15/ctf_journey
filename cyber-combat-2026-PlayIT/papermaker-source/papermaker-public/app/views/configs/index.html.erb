@@ -1,0 +1,188 @@
+<% content_for :title, "Snapshot Metadata Loader" %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "config" %>
+<% end %>
+
+<div class="config-page-wrapper">
+  <main class="pipeline-container">
+    <section class="config-card">
+
+      <div class="config-card-header">
+        <div>
+          <span class="label-caps primary">Snapshot Management</span>
+          <h2 class="config-title">Snapshot Metadata Loader</h2>
+          <p class="config-subtitle">Configure and stage an application metadata snapshot for activation.</p>
+        </div>
+      </div>
+
+      <%# Alert / result area — populated by JS after form submit %>
+      <div id="snap-alert" class="snap-alert hidden"></div>
+
+      <form id="snapshot-form" autocomplete="off" novalidate>
+
+        <%# ── Section A: App Information ──────────────────────────── %>
+        <fieldset class="snap-section">
+          <legend class="snap-legend">App Information</legend>
+          <div class="snap-grid">
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_name">Name</label>
+              <input id="s_name" name="name" type="text"
+                     class="snap-input" value="PaperMaker" disabled>
+            </div>
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_version">Version</label>
+              <input id="s_version" name="version" type="text"
+                     class="snap-input" value="2.4.1">
+            </div>
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_build">Build</label>
+              <input id="s_build" name="build" type="text"
+                     class="snap-input" value="1847">
+            </div>
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_environment">Environment</label>
+              <input id="s_environment" name="environment" type="text"
+                     class="snap-input" value="production">
+            </div>
+
+          </div>
+        </fieldset>
+
+        <%# ── Section B: Snapshot ─────────────────────────────────── %>
+        <fieldset class="snap-section">
+          <legend class="snap-legend">Snapshot</legend>
+          <div class="snap-grid">
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_snap_id">Snapshot ID</label>
+              <%
+                # Generate a random snapshot ID on every page load
+                snap_id = "snap_#{Time.now.strftime('%Y%m%d')}_#{SecureRandom.hex(4)}"
+              %>
+              <input id="s_snap_id" name="snap_id" type="text"
+                     class="snap-input snap-mono" value="<%= snap_id %>" readonly>
+            </div>
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_snap_type">Type</label>
+              <select id="s_snap_type" name="snap_type" class="snap-select">
+                <option value="full">full</option>
+                <option value="incremental">incremental</option>
+                <option value="partial">partial</option>
+                <option value="schema">schema</option>
+              </select>
+            </div>
+
+          </div>
+        </fieldset>
+
+        <%# ── Section C: Application Info ────────────────────────── %>
+        <fieldset class="snap-section">
+          <legend class="snap-legend">Application Info</legend>
+          <div class="snap-grid">
+
+            <div class="snap-field snap-field--full">
+              <label class="snap-label" for="s_description">Description</label>
+              <input id="s_description" name="description" type="text"
+                     class="snap-input"
+                     placeholder="Short description of this application">
+            </div>
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_author">Author</label>
+              <input id="s_author" name="author" type="text"
+                     class="snap-input" placeholder="Author or team name">
+            </div>
+
+            <div class="snap-field">
+              <label class="snap-label" for="s_license">License</label>
+              <input id="s_license" name="license" type="text"
+                     class="snap-input" placeholder="e.g. MIT, Apache-2.0">
+            </div>
+
+            <div class="snap-field snap-field--full">
+              <label class="snap-label" for="s_repository">Repository</label>
+              <input id="s_repository" name="repository" type="text"
+                     class="snap-input" placeholder="https://github.com/org/repo">
+            </div>
+
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button type="reset" class="btn-discard">Reset</button>
+          <button type="submit" class="btn-save" id="snap-submit">Stage Snapshot</button>
+        </div>
+      </form>
+
+      <%# Token result panel — hidden until JS populates it %>
+      <div id="token-panel" class="token-panel hidden">
+        <p class="snap-label">Staged successfully. Use the one-time activation token below:</p>
+        <div class="token-row">
+          <code id="token-value" class="token-code"></code>
+          <button class="btn-copy" onclick="copyToken()">Copy</button>
+        </div>
+        <p class="token-hint">
+          Activate via:
+          <code id="apply-url" class="token-url"></code>
+        </p>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<script>
+  document.getElementById('snapshot-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn    = document.getElementById('snap-submit');
+    const alert  = document.getElementById('snap-alert');
+    const panel  = document.getElementById('token-panel');
+
+    btn.disabled  = true;
+    btn.textContent = 'Staging…';
+    alert.className = 'snap-alert hidden';
+    panel.className = 'token-panel hidden';
+
+    const formData = new FormData(this);
+    // Include the disabled "name" field manually
+    formData.set('name', 'PaperMaker');
+
+    const params = new URLSearchParams();
+    for (const [k, v] of formData.entries()) params.append(k, v);
+
+    try {
+      const res  = await fetch('/config', { method: 'POST', body: params,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+      const json = await res.json();
+
+      if (json.token) {
+        document.getElementById('token-value').textContent = json.token;
+        document.getElementById('apply-url').textContent   = json.apply;
+        panel.className = 'token-panel';
+      } else {
+        showAlert('error', json.message || 'Unexpected error.');
+      }
+    } catch (err) {
+      showAlert('error', 'Request failed: ' + err.message);
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = 'Stage Snapshot';
+    }
+  });
+
+  function showAlert(type, msg) {
+    const el = document.getElementById('snap-alert');
+    el.className  = 'snap-alert ' + type;
+    el.textContent = msg;
+  }
+
+  function copyToken() {
+    navigator.clipboard.writeText(document.getElementById('token-value').textContent);
+  }
+</script>

@@ -1,0 +1,112 @@
+<% content_for :title, "history" %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "history" %>
+  <script src="https://unpkg.com/lucide@latest"></script>
+<% end %>
+
+<div class="history-wrapper">
+  <div class="history-container">
+    <div class="history-header">
+      <h2>Rendering History</h2>
+    </div>
+
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Input</th>
+          <th>Last Update</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @histories.empty? %>
+          <tr>
+            <td colspan="5" class="empty-state">No history found. Start rendering to see your logs here!</td>
+          </tr>
+        <% else %>
+          <% @histories.each do |history| %>
+            <tr>
+              <td><div class="history-id" title="<%= history.id %>"><%= history.id %></div></td>
+              <td class="history-content">
+                <div class="history-result-preview"><%= history.content %></div>
+                <textarea class="history-textarea-expand" readonly><%= history.content %></textarea>
+              </td>
+              <td><%= history.updated_at.strftime("%Y-%m-%d %H:%M") %></td>
+              <td class="history-actions">
+                <button class="btn-view" onclick="openPdfModal('<%= result_download_path(history.id) %>')">
+                  <i data-lucide="file" style="width: 14px; height: 14px;"></i>
+                </button>
+                <%= button_to delete_history_path(history.id), method: :delete, class: "btn-danger-outline", form: { style: "margin: 0;" }, onclick: "return confirm('Are you sure want to delete this history?');" do %>
+                  <i data-lucide="trash" style="width: 14px; height: 14px;"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pdfModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>PDF Preview</h3>
+      <button class="modal-close" onclick="closePdfModal()">&times;</button>
+    </div>
+    <div class="pdf-iframe-container">
+      <iframe id="pdfFrame" src=""></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Expandable textarea logic
+    const contentCells = document.querySelectorAll('.history-content');
+    
+    contentCells.forEach(cell => {
+      const preview = cell.querySelector('.history-result-preview');
+      const textarea = cell.querySelector('.history-textarea-expand');
+      
+      cell.addEventListener('click', (e) => {
+        if (textarea.style.display === 'block') return;
+        
+        preview.style.display = 'none';
+        textarea.style.display = 'block';
+        textarea.focus();
+      });
+      
+      textarea.addEventListener('blur', () => {
+        preview.style.display = 'block';
+        textarea.style.display = 'none';
+      });
+    });
+
+    // Modal click outside to close
+    document.getElementById('pdfModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePdfModal();
+      }
+    });
+
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  });
+
+  function openPdfModal(url) {
+    const modal = document.getElementById('pdfModal');
+    const frame = document.getElementById('pdfFrame');
+    frame.src = url;
+    modal.style.display = 'flex';
+  }
+
+  function closePdfModal() {
+    const modal = document.getElementById('pdfModal');
+    const frame = document.getElementById('pdfFrame');
+    frame.src = '';
+    modal.style.display = 'none';
+  }
+</script>

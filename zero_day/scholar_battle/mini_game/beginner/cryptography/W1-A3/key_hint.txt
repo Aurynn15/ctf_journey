@@ -1,0 +1,14 @@
+CATATAN ANALIS -- PETUNJUK KUNCI
+
+Berdasarkan analisis hex dump awal pada config.bin:
+
+  Offset 0x00-0x03 (hex): 4B 33 61 5F
+
+Nilai di atas merupakan representasi heksadesimal dari 4-byte XOR key.
+Konversi setiap byte dari hex ke integer untuk digunakan dalam operasi XOR.
+
+Struktur config.bin:
+  [0x00-0x03] : 4-byte XOR key
+  [0x04-EOF ] : XOR-encoded strings, masing-masing diakhiri byte 0x00
+
+-- Divisi Forensik Digital

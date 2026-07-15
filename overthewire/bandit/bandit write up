@@ -1,0 +1,175 @@
+bandit wargames
+
+bandit3
+bandit3@bandit:~$ ls
+inhere
+bandit3@bandit:~$ file ./inhere/
+./inhere/: directory
+bandit3@bandit:~$ file inhere/
+inhere/: directory
+bandit3@bandit:~$ cd ./inhere/
+bandit3@bandit:~/inhere$ ls
+bandit3@bandit:~/inhere$ ls -la
+total 12
+drwxr-xr-x 2 root    root    4096 Apr  3 15:17 .
+drwxr-xr-x 3 root    root    4096 Apr  3 15:17 ..
+-rw-r----- 1 bandit4 bandit3   33 Apr  3 15:17 ...Hiding-From-You
+bandit3@bandit:~/inhere$ file ./.
+./                  ../                 ...Hiding-From-You  
+bandit3@bandit:~/inhere$ file ./..
+../                 ...Hiding-From-You  
+bandit3@bandit:~/inhere$ file ./...Hiding-From-You 
+./...Hiding-From-You: ASCII text
+bandit3@bandit:~/inhere$ cat ./...Hiding-From-You 
+2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+bandit3@bandit:~/inhere$ 
+
+
+
+bandit 4
+bandit4@bandit:~$ ls 
+inhere
+bandit4@bandit:~$ cd inhere/
+bandit4@bandit:~/inhere$ ls
+-file00  -file01  -file02  -file03  -file04  -file05  -file06  -file07  -file08  -file09
+bandit4@bandit:~/inhere$ cat ./-file0
+cat: ./-file0: No such file or directory
+bandit4@bandit:~/inhere$ cat ./-file00
+d%�h�U��N?CN�qy�������B��g4V�bandit4@bandit:~/inhere$ file ./-file00
+./-file00: data
+bandit4@bandit:~/inhere$ xxd ./-file00
+00000000: 6425 8a68 9d55 fba7 4e3f 434e 8771 79e9  d%.h.U..N?CN.qy.
+00000010: 1880 9fca f6f8 a042 8907 8667 3456 873c  .......B...g4V.<
+00000020: 08                                       .
+bandit4@bandit:~/inhere$ file ./*
+./-file00: data
+./-file01: data
+./-file02: data
+./-file03: data
+./-file04: data
+./-file05: data
+./-file06: data
+./-file07: ASCII text
+./-file08: data
+./-file09: data
+bandit4@bandit:~/inhere$ cata ./-file07
+Command 'cata' not found, did you mean:
+  command 'caja' from deb caja (1.26.3-1)
+  command 'catm' from deb mescc-tools (1.4.0-1)
+  command 'cat' from deb coreutils (9.4-3ubuntu6.2)
+  command 'cava' from deb cava (0.7.4-1)
+Try: apt install <deb name>
+bandit4@bandit:~/inhere$ cat ./-file07
+4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+bandit4@bandit:~/inhere$ 
+
+
+bandit 5
+bandit5@bandit:~/inhere$ cat ./maybehere00
+cat: ./maybehere00: Is a directory
+bandit5@bandit:~/inhere$ cd ./maybehere07
+bandit5@bandit:~/inhere/maybehere07$ ls
+-file1  -file2  -file3  spaces file1  spaces file2  spaces file3
+bandit5@bandit:~/inhere/maybehere07$ ls -la
+total 56
+drwxr-x---  2 root bandit5 4096 Apr  3 15:17 .
+drwxr-x--- 22 root bandit5 4096 Apr  3 15:17 ..
+-rwxr-x---  1 root bandit5 3663 Apr  3 15:17 -file1
+-rwxr-x---  1 root bandit5 3065 Apr  3 15:17 .file1
+-rw-r-----  1 root bandit5 2488 Apr  3 15:17 -file2
+-rw-r-----  1 root bandit5 1033 Apr  3 15:17 .file2
+-rwxr-x---  1 root bandit5 3362 Apr  3 15:17 -file3
+-rwxr-x---  1 root bandit5 1997 Apr  3 15:17 .file3
+-rwxr-x---  1 root bandit5 4130 Apr  3 15:17 spaces file1
+-rw-r-----  1 root bandit5 9064 Apr  3 15:17 spaces file2
+-rwxr-x---  1 root bandit5 1022 Apr  3 15:17 spaces file3
+bandit5@bandit:~/inhere/maybehere07$ cat ./.
+./      ../     .file1  .file2  .file3  
+bandit5@bandit:~/inhere/maybehere07$ cat ./.file2
+HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        bandit5@bandit:~/inhere/maybehere07$ find . -type f -size 1033c ! -e
+Command 'e' not found, but can be installed with:
+apt install e-wrapper
+Please ask your administrator.
+bandit5@bandit:~/inhere/maybehere07$ find . -type f -size 1033c ! -executable
+./.file2
+bandit5@bandit:~/inhere/maybehere07$ cat ./.file2
+HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+
+bandit6
+bandit6@bandit:~$ find / -user bandit7 -group bandit6 -size 33c
+find: ‘/tmp’: Permission denied
+find: ‘/etc/credstore.encrypted’: Permission denied
+find: ‘/etc/sudoers.d’: Permission denied
+find: ‘/etc/stunnel’: Permission denied
+find: ‘/etc/multipath’: Permission denied
+find: ‘/etc/ssl/private’: Permission denied
+find: ‘/etc/polkit-1/rules.d’: Permission denied
+find: ‘/etc/credstore’: Permission denied
+find: ‘/etc/xinetd.d’: Permission denied
+find: ‘/dev/mqueue’: Permission denied
+find: ‘/dev/shm’: Permission denied
+find: ‘/snap’: Permission denied
+find: ‘/lost+found’: Permission denied
+find: ‘/run/pam_pidns’: Permission denied
+find: ‘/run/udisks2’: Permission denied
+find: ‘/run/chrony’: Permission denied
+find: ‘/run/user/11003’: Permission denied
+find: ‘/run/user/11008’: Permission denie
+bandit6@bandit:~$ find / -user bandit7 -group bandit6 -size 33c 2>/dev/null
+/var/lib/dpkg/info/bandit7.password
+bandit6@bandit:~$ cat /var/lib/dpkg/info/bandit7.password
+morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+bandit6@bandit:~$ 
+
+bandit7
+bandit7@bandit:~$ ls 
+data.txt
+bandit7@bandit:~$ wc -l data.txt 
+98567 data.txt
+bandit7@bandit:~$ cat data.txt | grep "millionth"
+millionth	dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+bandit7@bandit:~$ ^C
+bandit7@bandit:~$ 
+
+
+
+bandit8
+bandit8@bandit:~$ cat data.txt | sort | uniq | -c
+-c: command not found
+bandit8@bandit:~$ cat data.txt | sort | uniq -c   	be using unique minus c, minu c stands for count. so each line has been repeated 
+4CKMh1JI91bUIZZPXDqGanal4xvAg0JM 
+
+bandit9
+�h�A����ն�63���/Qw�ٿ��bandit9@bandit:~$ cat data.txt | grep base64
+bandit9@bandit:~$ strings data.txt | grep
+Usage: grep [OPTION]... PATTERNS [FILE]...
+Try 'grep --help' for more information.
+bandit9@bandit:~$ strings data.txt | grep =
+ ========== the
+I\=Ow
+V?L=
+%3=VZ
+========== password
+={M\
+========== is
+=Dvq
+=n/N
+========== FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+zX]%=
+]\{=
+bandit9@bandit:~$ ^C
+
+bandit10
+bandit10@bandit:~$ ls
+data.txt
+bandit10@bandit:~$ file data.txt 
+data.txt: ASCII text
+bandit10@bandit:~$ cat data.txt 
+VGhlIHBhc3N3b3JkIGlzIGR0UjE3M2ZaS2IwUlJzREZTR3NnMlJXbnBOVmozcVJyCg==
+bandit10@bandit:~$ 
+
+
+bandit11
+

@@ -1,2 +1,0 @@
-# python-cybersec
-learn

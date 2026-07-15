@@ -1,0 +1,6 @@
+Catatan Insiden - Tim Respons PT Pelindung Data Nusantara
+
+Sistem monitoring menandai lalu lintas keluar tidak biasa dari host 10.10.20.15 menuju alamat
+eksternal 203.0.113.66. Rekaman lalu lintas dilampirkan (incident.pcap).
+
+Tugas: rekonstruksi apa yang dikirim keluar oleh penyerang dan pulihkan datanya sebagai bukti.

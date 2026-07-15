@@ -1,0 +1,11 @@
+BrankasKripto - Catatan Skema Token (internal)
+PT Brankas Kripto Nusantara
+
+Tanda tangan sesi dibuat oleh klien penandatangan perangkat (ECDSA, kurva P-521,
+hash SHA-512). Kunci publik perangkat ada pada pubkey.pem.
+
+Kunci enkripsi brankas (vault) diturunkan dari kunci privat perangkat d sebagai:
+    K = SHA-256( "BRANKAS-v2|" + DESIMAL(d) + "|BK-2024-OPS" )
+  - DESIMAL(d): nilai d ditulis sebagai bilangan desimal ASCII (bukan heksadesimal,
+    bukan big-endian bytes).
+Berkas brankas: secret.enc = IV(16 byte) || AES-256-CBC(K, data) dengan padding PKCS#7.

@@ -1,0 +1,32 @@
+{{define "case"}}
+<div class="hero">
+  <div><h1>{{.Case.Title}}</h1><p class="muted">Case #{{.Case.ID}} owned by {{.Case.Owner.Username}}</p></div>
+  <span class="badge">{{.Case.Status}}</span>
+</div>
+<section class="grid">
+  <div class="panel pad">
+    <h2>Evidence</h2>
+    <table>
+      <thead><tr><th>File</th><th>Analyzer summary</th></tr></thead>
+      <tbody>
+        {{range .Case.Evidence}}<tr><td>{{.Filename}}</td><td>{{.Summary}}</td></tr>{{else}}<tr><td colspan="2" class="muted">No evidence uploaded.</td></tr>{{end}}
+      </tbody>
+    </table>
+    <form class="form push" method="post" enctype="multipart/form-data" action="/cases/{{.Case.ID}}/upload">
+      <label>Evidence ZIP<input name="archive" type="file" accept=".zip"></label>
+      <div class="muted" style="font-size: 13px; margin: 4px 0 12px; line-height: 1.4;">
+        <span style="display: block; margin-bottom: 4px;">ℹ️ <strong>Expected ZIP Layout:</strong></span>
+        <pre class="mono" style="margin: 0; padding: 6px 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; font-size: 12px;">📂 archive.zip
+├── 📄 manifest.xml
+└── 📄 evidence.bin</pre>
+      </div>
+      <button class="btn primary" type="submit">Upload archive</button>
+    </form>
+  </div>
+  <div class="panel pad">
+    <h2>Reports</h2>
+    {{range .Case.Reports}}<p><a class="btn" href="/reports/{{.ShareToken}}">Open {{.Kind}} report</a></p>{{else}}<p class="muted">Run analysis to generate reports.</p>{{end}}
+    <form method="post" action="/cases/{{.Case.ID}}/reindex"><button class="btn success" type="submit">Run analyzer</button></form>
+  </div>
+</section>
+{{end}}

@@ -1,0 +1,12 @@
+Catatan dari tim pengembang:
+
+Bytecode VM8 dikemas menggunakan operasi XOR byte-per-byte dengan konstanta tetap
+sebelum di-embed ke dalam binary. Konstanta tersebut disimpan sebagai nilai immediat
+dalam kode C dan dapat ditemukan melalui analisis binary.
+
+Perhatikan pola byte yang berulang dalam section data binary - konstanta XOR yang
+digunakan berkaitan erat dengan nomor versi utama sistem operasi yang pertama kali
+digunakan untuk mengembangkan VM ini (dalam format oktal, lalu dikonversi ke desimal).
+
+Petunjuk tambahan: konstanta tersebut merupakan bilangan prima yang nilainya
+berada di antara 100 dan 130.

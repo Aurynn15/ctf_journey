@@ -1,0 +1,16 @@
+Spesifikasi VM - Validator Terselubung
+=======================================
+
+VM berbasis stack sederhana. Opcode yang didukung:
+
+  0x01 PUSH <byte>  - Masukkan 1 byte ke atas stack
+  0x02 XOR          - Ambil 2 nilai dari stack, XOR, masukkan hasil ke stack
+  0x03 PRINT        - Ambil nilai dari stack, cetak sebagai karakter ASCII
+  0x04 HALT         - Hentikan eksekusi
+
+Format bytecode: instruksi berurutan, PUSH selalu diikuti oleh 1 byte operand.
+Bytecode tertanam di dalam binary sebagai array di segmen read-only.
+Binary memerlukan password yang benar sebagai argumen baris perintah pertama (argv[1]).
+
+Contoh urutan untuk mencetak karakter 'A' (ASCII 65 = 0x41):
+  01 41 01 00 02 03  ->  PUSH 0x41, PUSH 0x00, XOR=0x41, PRINT -> 'A'

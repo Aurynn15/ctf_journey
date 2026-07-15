@@ -1,0 +1,27 @@
+Spesifikasi VM8 - Mesin Virtual 8-Opcode
+=========================================
+Versi: 1.0 | Status: Internal
+
+Arsitektur:
+  - Stack-based virtual machine
+  - Stack: 256 entry, 8-bit per entry
+  - Memory: 256 slot, 8-bit per slot
+  - Bytecode: array byte linear, PC dimulai dari 0
+
+Opcode:
+  0x01 <val>   : PUSH  - Masukkan nilai immediat ke stack
+  0x02         : XOR   - Pop 2 nilai, push hasil XOR
+  0x03 <val>   : ADD   - Pop 1 nilai, tambah dengan immediat, push kembali
+  0x04 <addr>  : STORE - Pop 1 nilai, simpan ke mem[addr]
+  0x05 <addr>  : LOAD  - Push nilai dari mem[addr] ke stack
+  0x06 <addr>  : CALL  - Panggil subrutin di offset bytecode tertentu
+  0x07         : RET   - Kembali dari subrutin
+  0x08         : PRINT - Cetak karakter dari memori ke stdout
+
+Catatan:
+  Bytecode asli dikemas (diobfuskasi) sebelum disimpan di binary.
+  Proses unpacking dilakukan saat runtime menggunakan operasi bitwise sederhana.
+  Konstanta kunci untuk unpacking dapat ditemukan di bagian data binary.
+  Peringatan: binary menerapkan transformasi tambahan sebelum mencetak output ke
+  stdout. Untuk mendapatkan nilai asli, simulasikan VM dan baca nilai mem[] secara
+  langsung tanpa mengandalkan output dari binary.

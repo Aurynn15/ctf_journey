@@ -1,0 +1,16 @@
+{{define "base"}}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Title}} · ArchiveDesk</title>
+  <style>{{.CSS}}</style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/cases"><span class="mark">A</span><span>ArchiveDesk</span></a>
+    <nav class="nav"><a href="/cases">Cases</a><a href="/admin/reviews">Admin</a><a href="/logout">Logout</a></nav>
+  </header>
+  <main class="wrap">{{.Body}}</main>
+</body>
+</html>{{end}}

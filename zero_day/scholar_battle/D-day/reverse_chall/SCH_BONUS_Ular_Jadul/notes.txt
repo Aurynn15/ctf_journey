@@ -1,0 +1,7 @@
+Berkas pendukung - Snake "Ular Jadul" (Bonus, Reverse Engineering)
+
+game : biner ELF64 x86-64, permainan Snake klasik di terminal.
+
+Cara Menjalankan:
+  chmod +x game
+  ./game                 (butuh terminal Linux x86_64)

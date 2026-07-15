@@ -1,0 +1,6 @@
+{{define "report"}}
+<div class="panel pad">
+  <div class="hero"><div><h1>{{.Report.Kind}} report</h1><p class="muted">Case #{{.Report.CaseID}} · {{.Report.CreatedAt}}</p></div></div>
+  <pre class="mono">{{.Report.Diagnostics}}</pre>
+</div>
+{{end}}

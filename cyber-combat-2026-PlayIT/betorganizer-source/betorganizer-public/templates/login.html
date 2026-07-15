@@ -1,0 +1,72 @@
+{{define "login.html"}}<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetOrganizer - Masuk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            bg: '#000000',
+                            primary: '#39FF14',
+                            primaryHover: '#32CC11',
+                            card: '#0a0a0a',
+                            border: '#27272a',
+                            textMuted: '#a1a1aa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-bg text-zinc-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-[400px] flex flex-col gap-6">
+        
+        <div class="text-center flex flex-col items-center gap-2">
+            <div class="bg-brand-primary p-2 flex items-center justify-center">
+                <i class="ph-fill ph-strategy text-2xl text-black"></i>
+            </div>
+            <span class="font-extrabold text-2xl tracking-tight text-white uppercase mt-1">
+                Bet<span class="text-brand-primary">Organizer</span>
+            </span>
+            <p class="text-xs text-brand-textMuted uppercase tracking-widest mt-1">Predict matches. Earn coins.</p>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border p-8 flex flex-col gap-6 shadow-2xl">
+            {{if .Error}}
+            <div class="bg-red-950/20 border border-red-500/30 text-red-400 p-3 text-xs font-semibold text-center">
+                {{.Error}}
+            </div>
+            {{end}}
+            
+            <form method="POST" action="/login" class="flex flex-col gap-4">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[10px] font-bold text-brand-textMuted uppercase tracking-wider">Username</label>
+                    <input type="text" name="username" autocomplete="off" required class="w-full bg-brand-bg border border-brand-border focus:border-brand-primary outline-none text-white p-3 text-xs transition-colors"/>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[10px] font-bold text-brand-textMuted uppercase tracking-wider">Password</label>
+                    <input type="password" name="password" required class="w-full bg-brand-bg border border-brand-border focus:border-brand-primary outline-none text-white p-3 text-xs transition-colors"/>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-primary hover:bg-brand-primaryHover text-black font-bold uppercase tracking-wider py-3.5 text-xs transition-colors mt-2">
+                    Masuk ke Akun
+                </button>
+            </form>
+        </div>
+
+        <div class="text-center text-xs text-brand-textMuted">
+            Belum punya akun? <a href="/register" class="text-brand-primary font-bold hover:underline">Daftar sekarang</a>
+        </div>
+    </div>
+</body>
+</html>{{end}}

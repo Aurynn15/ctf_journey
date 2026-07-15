@@ -1,0 +1,9 @@
+Berkas tantangan OA-M3 (Protokol Bayangan)
+==========================================
+svcd                  - daemon protokol biner (layanan target, berjalan sebagai svc).
+svc-report            - utilitas pelaporan ber-SUID root (helper untuk dianalisis).
+svc-backup            - utilitas cadangan (pembanding).
+libc.so.6             - libc TEPAT yang dipakai daemon (untuk rantai leak/exploit).
+ld-linux-x86-64.so.2  - loader yang menyertainya.
+
+Daemon target berjalan pada port TCP yang dipetakan oleh instance Anda.

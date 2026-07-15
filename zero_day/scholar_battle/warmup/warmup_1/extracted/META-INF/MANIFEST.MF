@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+
+Name: AndroidManifest.xml
+SHA-256-Digest: 8W29kEWpGVDslXeEwSPQ1GJByYJZXtdwnW6s9OcdRmQ=
+
+Name: assets/app_config.json
+SHA-256-Digest: XXqZHdO0o2XmwPeZPOgSunH1o76TbVA081refsxHZTk=
+
+Name: classes.dex
+SHA-256-Digest: kdiN+8my2q1gTO7//D3l6sENSeUUqNgi7AauU23+gQ4=
+
+Name: resources.arsc
+SHA-256-Digest: KXw4s5Ylmu9q19ssjBfgdmnFOpKienw2W+db+zCqwEU=
+
